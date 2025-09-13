@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>JD Task Popup</title>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --secondary: #94a3b8;
+      --success: #10b981;
+      --border: #e2e8f0;
+      --bg: #ffffff;
+      --card-bg: #f8fafc;
+      --text: #1e293b;
+      --subtext: #64748b;
+      --radius: 12px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --primary: #818cf8;
+        --primary-hover: #6366f1;
+        --secondary: #94a3b8;
+        --border: #334155;
+        --bg: #0f172a;
+        --card-bg: #1e293b;
+        --text: #f8fafc;
+        --subtext: #94a3b8;
+      }
+    }
+    * {
+      box-sizing: border-box;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      padding: 16px;
+      width: 280px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+    }
+    .plugin-interface {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      background: var(--card-bg);
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+    .header {
+      font-size: 15px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 12px;
+      color: var(--primary);
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--border);
+    }
+    #bestNewLog {
+      font-weight: 700;
+    }
+    .status {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      font-size: 13px;
+      color: var(--subtext);
+      margin-bottom: 16px;
+      background: rgba(255,255,255,0.1);
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .status div {
+      display: flex;
+      align-items: center;
+    }
+    .start-btn {
+      background-color: var(--primary);
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      width: 100%;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    }
+    .start-btn:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+    .start-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .input-fields {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      margin: 12px 0;
+    }
+    .input-fields > div {
+      width: 40px;
+      color: var(--subtext);
+      font-weight: 500;
+    }
+    .input-fields input {
+      flex: 1;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      transition: all 0.2s;
+    }
+    .input-fields input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border);
+      color: var(--subtext);
+    }
+    .clear-btn {
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      background: transparent;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .clear-btn:hover {
+      background: rgba(99, 102, 241, 0.1);
+    }
+    .plugin-title {
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .range-separator {
+      color: var(--subtext);
+    }
+  </style>
+</head>
+<body>
+  <div class="plugin-interface">
+    <div class="header">
+      <div id="bestNewLog">等待中</div>
+    </div>
+    <div class="status">
+      <div id="task_get">领取: 0</div>
+      <div id="task_upload">采集: 0</div>
+      <div id="task_success">上传: 0</div>
+      <div id="task_success_rate">成功: 0%</div>
+    </div>
+    <button class="start-btn" id="task_start">开始任务</button>
+
+    <div class="input-fields">
+      <div>标识</div>
+      <input id="userId" type="text" placeholder="用户标识" style="width: 60px;" />
+    </div>
+    <div class="input-fields">
+      <div>任务</div>
+      <input id="renwuId" type="text" placeholder="任务名称" style="width: 120px;" />
+    </div>
+    <div class="input-fields">
+      <div>延迟</div>
+      <input id="delayMin" type="number" placeholder="最小" value="10" style="width: 60px;" />
+      <span class="range-separator">-</span>
+      <input id="delayMax" type="number" placeholder="最大" value="15" style="width: 60px;" />
+    </div>
+    
+
+    <div class="footer">
+      <button class="clear-btn" id="clearData">清空数据</button>
+      <div class="plugin-title">JD V8.16</div>
+    </div>
+  </div>
+
+  <script src="renwu.js"></script>
+</body>
+</html>

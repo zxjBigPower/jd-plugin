@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "miao",
+  "version": "88.1166",
+  "action": { "default_popup": "renwu.html" },
+
+  "permissions": ["tabs", "storage","webNavigation", "storage"],
+  "host_permissions": [
+    "https://*.jd.com/*",          
+    "https://111.231.77.4/*"      
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["https://*.jd.com/*", "https://*.jd.hk/*", "https://*.jingdonghealth.cn/*"],
+      "js": ["content.js"],          
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://*.jd.com/*", "https://*.jd.hk/*", "https://*.jingdonghealth.cn/*"],
+      "js":  ["do.js"],      
+      "run_at": "document_start"
+    }
+    
+  ],
+
+  "background": { "service_worker": "background.js" }
+}
